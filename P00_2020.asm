@@ -1,7 +1,7 @@
 ; Most x86 Assembly is not case sensitive
-.386
-.MODEL FLAT
-.STACK 4096
+.386            ; This directive tells the assembler to generate code for the 80386 processor, enabling the use of 32-bit instructions
+.MODEL FLAT     ; Specifies a flat memory model where all segments are assumed to be part of a single linear address space.
+.STACK 4096     ; Allocates a stack of 4096 bytes for the program's use.
 
 ;__________Declares an external procedure (function) named ExitProcess that will be called to terminate the process___________
 ; NEAR32 stdcall, dwExitCode:DWORD -> specifies the calling convention (stdcall) and parameter type (DWORD) for ExitProcess
