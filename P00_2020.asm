@@ -1,0 +1,4 @@
+.386
+.MODEL FLAT
+.STACK 4096
+
