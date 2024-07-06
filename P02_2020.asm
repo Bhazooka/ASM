@@ -61,6 +61,8 @@ _start:
         ; _____________Setup a counter to count upwards__________________
     mov ecx, 1
 
+
+
         ; _____________Forloops__________________
 forLoop1:   ; marks the begining of the loop
     
@@ -71,19 +73,52 @@ forLoop1:   ; marks the begining of the loop
     mul ebx     ; multiply ebx into eax
     inc ecx     ; increment counter
 
-    jmp forLoop1
-
+    jmp forLoop1    ; start loop again
 forEnd1:    ; marks end of the loop
 
-	; _____mod p _____
+	    ; _____mod p _____
 	    ; Don't use CDQ in this instance, since we want to make use of the number already stored in EAX:EDX
 	div p 				; Divide p into EAX:EDX.  Put the whole result in EAX and the remainder in EDX
-	; move the remainder into EAX so that we multiply again
-	mov eax, edx
-	; Get EBX ready as well since we will multiple EBX into EAX later on.
-	mov eax, edx 
-	; Get the counter = 1
-	mov	exc, 1
+	mov eax, edx        ; move the remainder into EAX so that we multiply again
+	mov ebx, edx        ; Get EBX ready as well since we will multiple EBX into EAX later on.
+
+	mov	exc, 1          ; Get the counter = 1
+
+
+
+forLoop2: 
+        
+    cmp ecx, b          ; if counter == b
+    je forEnd2          ; exit loop
+
+    mul ecx             ; multiply ebx into eax
+    inc ebx             
+    jmp forLoop2
+
+forEnd2:
+
+
+        ;_______mod p again___________
+        ; Don't use CDQ in this instance, since we want to make use of the number already stored in EAX:EDX 
+    div p
+    mov k, edx
+
+    INVOKE OutputStr, ADDR ANSWER
+    INVOKE OutputInt, k
+    INVOKE OutputStr, ADDR NEWLINE
+
+
+endProg: 
+    ExitProcess, 0
+
+Public _start
+END
+
+
+
+
+
+
 
 
 
