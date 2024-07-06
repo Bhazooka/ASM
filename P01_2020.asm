@@ -2,7 +2,8 @@
 .MODEL FLAT
 .STACK 4096
 
-INCLUDE io.inc
+INCLUDE io.inc      (We are importing the Procedures OutputStr and InputStr)
+
 ExitProcess PROTO NEAR32 stdcall, dwExitCode:DWORD
 
 .DATA
@@ -29,7 +30,7 @@ _start:
             ; InputInt: This is another procedure defined in io.inc. It waits for the user to input an integer value from the keyboard, then stores the result in the EAX register.            
 
     mov g, eax  
-            ; moves the value stored into the eax register into g
+            ; moves the value stored into the EAX register into g
 
     ; EAX register as Default for return value.
     ; Function Return Values:
