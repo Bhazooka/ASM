@@ -3,12 +3,12 @@
 .MODEL FLAT     ; Specifies a flat memory model where all segments are assumed to be part of a single linear address space.
 .STACK 4096     ; Allocates a stack of 4096 bytes for the program's use.
 
-;__________Declares an external procedure (function) named ExitProcess that will be called to terminate the process___________
-; NEAR32 stdcall, dwExitCode:DWORD -> specifies the calling convention (stdcall) and parameter type (DWORD) for ExitProcess
+    ;__________Declares an external procedure (function) named ExitProcess that will be called to terminate the process___________
+    ; NEAR32 stdcall, dwExitCode:DWORD -> specifies the calling convention (stdcall) and parameter type (DWORD) for ExitProcess
 ExitProcess PROTO NEAR32 stdcall, dwExitCode:DWORD ;DWORD means Double Word. (in x86 a word is 16 bits (2bytes) so a Double Word is 32 bits(4bytes))
-; PROTO is used to declare a prototype in assembly. it informs the assembler about existance of procedures and its calling convention
-    ; ExitProcess is name of function
-; the colon ":" is used to separate the parameter name from it's type.
+    ; PROTO is used to declare a prototype in assembly. it informs the assembler about existance of procedures and its calling convention
+        ; ExitProcess is name of function
+    ; the colon ":" is used to separate the parameter name from it's type.
 
 ; ____________data section stores all the global variables_______________
 .DATA
@@ -78,3 +78,11 @@ END             ; marks the end of program
 
 
 
+
+
+
+; *******************EXTRA NOTES**************************
+
+; DWORD is equivalent to an integer in many contexts. 
+; Specifically, in the context of x86 assembly language and the Windows API, 
+; DWORD stands for "Double Word," which is a 32-bit unsigned integer.

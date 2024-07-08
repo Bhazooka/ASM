@@ -36,7 +36,7 @@ _start:
     mov g, eax                          ; Move value from EAX register into g
 
         ; ____________if statement_______________
-    cmp g, 0            ; if g = 0
+    cmp g, 0            ; if g = 0      --> cmp stands for compare. (compares 2 operands)
     je endProg          ; jump to endProg Procedure
 
 
@@ -132,4 +132,44 @@ END
     ; The zero flag is set when the result of the last comparison (cmp) or test operation is zero (i.e., when the compared values are equal).
 ; Syntax: je label
 ; Use Case: Used for branching based on the result of a previous comparison. For example, it is used to jump to a specific part of the code if two values are equal.
+
+
+
+; Keep in mind that forLoop1: and forLoop2: are just labels
+
+; In assembly language, labels like forInnerLoop, forOuterLoop, forInputStart, and forInputEnd are not predefined keywords. 
+; They are custom-defined labels used to mark specific locations in the code, making it easier to manage jumps and loops. 
+; Labels are user-defined names that represent addresses in the code. They are used to identify the targets for jump and loop instructions. Labels make the code more readable and help organize it.
+
+; _____ now how could we define a function ______ ?
+
+; .CODE
+; _start:
+    ; Call the AddNumbers function with arguments 5 and 10
+;    push 10             ; Push second argument
+;    push 5              ; Push first argument
+;    call AddNumbers     ; Call the AddNumbers function
+;    add esp, 8          ; Clean up the stack (2 arguments * 4 bytes each)
+    
+    ; Store the result
+;    mov result, eax
+    
+    ; Output the result
+;    INVOKE OutputInt, result
+;    INVOKE OutputStr, ADDR NEWLINE
+    
+    ; Exit
+;    INVOKE ExitProcess, 0
+
+; Function to add two numbers
+;AddNumbers PROC
+;    push ebp            ; Save base pointer
+;    mov ebp, esp        ; Set base pointer to stack pointer
+;    mov eax, [ebp + 8]  ; Get the first argument (5)
+;    add eax, [ebp + 12] ; Add the second argument (10)
+;    pop ebp             ; Restore base pointer
+;    ret                 ; Return from function
+;AddNumbers ENDP
+
+;END _start
 
