@@ -41,14 +41,13 @@ _start:
     ;====GET INPUT ARRAY====
         ;for(n=0; n<4; n++)
         ;   cin >> I[n]
-    mov         eax,        0        ; counter for the forloop
+    mov         ecx,        0        ; counter for the forloop
 
 StartInputLoop: 
     INVOKE      OutputStr,      ADDR strInputArr
     INVOKE      OutputInt,      ecx                 ;output the counter
     INVOKE      OutputStr,      ADDR strColon
-    INVOKE      InputInt
-    lea         ebx,            I
+    lea         ebx,    I
 
     ;calc offset in array offset = base + (ecx * 4)
     imul        eax,            ecx, 4      ;eax = ecx * 4
@@ -56,7 +55,7 @@ StartInputLoop:
     ;get input
     INVOKE      InputInt
     mov         [ebx],          eax
-    inc         ecx,            4
+    inc         ecx
     cmp         ecx,            4           ;compare (ecx and 4)
     jl          StartInputLoop              ;jump to startLoop if comparison evaluates to ecx < 4  
 
@@ -71,9 +70,70 @@ StartInputLoop:
         ;for(n=0; n<4; n++)
         ;   cin >> I[n]
     mov         ecx,            0
-    mov         
+
+StartOutputALoop:
+    lea         ebx,            I
+    ; Calculate the offset in the array offset = base + (ecx * 4)
+    imul        eax, ecx, 4     ; eax = ecx * 4
+    add         ebx, eax
+
+    ; Read the value from the array
+    INVOKE      OutputInt,  [ebx]
+    cmp         ecx,    3
+    je          SkipCommaA
+    INVOKE      OutputInt,  ADDR     strComma   
+
+SkipCommaA:
+    inc         ecx
+    cmp         ecx,    4   ; if(ecx < 4) gotoStartOutput
+    jl          StartOutputALoop
+
+    INVOKE      OutputStr, ADDR strCloseBrackets
+    INVOKE      OutputStr, strTab
+    INVOKE      OutputStr, strOpenBrackets
+        ;for(n=0;n<4;n++)
+        ; cout << (I[n]/kernel + bias)
     
+    mov         ecx, 0
     
+StartOutputBLoop:
+    lea         ebx,    I
+    imul        eax,    ecx, 4
+    add         ebx,    eax
+    ; Prepare for d
+    mov         edx,    0
+    mov         eax,    [ebx]         ; eax = (edx:eax)/kernel + bias
+    div         [kernel]
+    add         edx,    [bias]
+
+    ; See if the answer is greater than 255
+    ; if(eax<=2)
+
+    cmp         eax,    255
+    jle         LessThan
+    mov         eax,    255
+
+LessThan:
+    INVOKE      OutputInt, eax
+    cmp         ecx,    3
+    jle         SkipCommaB
+    INVOKE      OutputStr, ADDR strComma
+SkipCommaB:
+    inc         ecx
+    cmp         ecx,    4
+    jl          StartOutputBLoop
+
+    INVOKE      OutputStr,  ADDR strCloseBrackets
+    INVOKE      OutputStr,  ADDR strNL
+
+
+    ; =================== Get the Quit Prompt ====================
+    INVOKE      OutputStr, ADDR strQuit
+    INVOKE      InputInt
+        ;if(ecx!=0)
+        ;   go to start
+    cmp         eax, 0
+    jne          _start
 
     
     INVOKE ExitProcess,0
