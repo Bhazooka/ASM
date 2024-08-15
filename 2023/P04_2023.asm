@@ -70,10 +70,10 @@ InputLoopStart:
 	; Get the input
 	INVOKE			InputInt						; get input
 	mov				[ebx],eax						; store eax into the ebx location
-	;if(col!=3) then inc col
+	;if(col!=3) then inc col						
 	;   else inc row and set col=0
-	cmp				DWORD PTR [ebp-8],3
-	jne				IncColA
+	cmp				DWORD PTR [ebp-8],3				; compare current index col to 3
+	jne				IncColA							; jump if not equal to 3, jump to Increment Column A (meaning we move to the next column)
 	;if(row==3) then exit the loop
 	cmp				DWORD PTR [ebp-4],3
 	je				InputLoopEnd
@@ -88,7 +88,7 @@ IncColA:
 InputLoopEnd:
 
 	;===================================Get the kernel array===========================================
-	;Initialise the local variables
+	;Initialise the local variables. Essentially reseting the local variable values so we can do all the same logic to get the kernel matrix
 	mov				DWORD PTR [ebp-4],0				;row = 0
 	mov				DWORD PTR [ebp-8],0				;col = 0
 KernelLoopStart:
@@ -102,7 +102,7 @@ KernelLoopStart:
 	
 	; Calculate the 1D array index
 	; row * columns + col 
-	imul			eax,DWORD PTR [ebp-4],2			; row * 2 (num of cols)
+	imul			eax,DWORD PTR [ebp-4],2			; row * 2 (num of cols) -- the kernel is 2x2
 	add 			eax,DWORD PTR [ebp-8]			; index = row * 2 + col 
 	imul			eax,4							; Get the DWORD offset
 	; Access the array address
@@ -154,24 +154,28 @@ KernelLoopEnd:
 	;col			[ebp-8]
 	;rowOffset		[ebp-16]
 	;colOffset		[ebp-20]
+	; reset everything to 0
 	mov					DWORD PTR [ebp-4],0
 	mov					DWORD PTR [ebp-8],0		
 	mov					DWORD PTR [ebp-20],0			;colOffset = 0
-	
 	mov					DWORD PTR [ebp-16],0			;rowOffset = 0
 OuterRowLoopStart:
+	; rowOffset<3
 	cmp					DWORD PTR [ebp-16],3			;if(rowOffset>=3) exit OuterRowLoopStart
 	jge					OuterRowLoopEnd
 	mov					DWORD PTR [ebp-20],0
 	OuterColLoopStart:
+		; colOffset<3
 		cmp				DWORD PTR [ebp-20],3
 		jge				OuterColLoopEnd
 		mov				DWORD PTR [ebp-4],0
 		InnerRowLoopStart:
+			; row<2
 			cmp			DWORD PTR [ebp-4],2
 			jge			InnerRowLoopEnd
 			mov			DWORD PTR [ebp-8],0
 			InnerColLoopStart:
+				; col<2
 				cmp		DWORD PTR [ebp-8],2
 				jge		InnerColLoopEnd
 				;Get the value from the InputArray
@@ -188,8 +192,8 @@ OuterRowLoopStart:
 				;Calulate the memory offset
 				imul	eax,4
 				
-				;We get the base address of the inputImage
-				lea		ebx,inputImage
+				;We get the base address of the inputImage array
+				lea		ebx,inputImage	; we are reading in the values
 				add		ebx,eax
 				mov		ecx,[ebx]		;Stores the value from the input array into temp
 				
